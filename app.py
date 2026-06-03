@@ -201,7 +201,14 @@ label { color: #8892a4 !important; font-size: 0.85rem !important; }
 def load_model():
     model = joblib.load("knn_heart.pkl")
     scaler = joblib.load("scaler.pkl")
-    expected_columns = joblib.load("columns.pkl")
+    raw = joblib.load("columns.pkl")
+    
+    # Handle any type — Index, ndarray, list, etc.
+    if hasattr(raw, 'tolist'):
+        expected_columns = raw.tolist()
+    else:
+        expected_columns = list(raw)
+    
     return model, scaler, expected_columns
 
 try:
